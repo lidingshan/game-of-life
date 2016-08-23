@@ -11,15 +11,34 @@ require './life_game'
 describe "Game of Life" do
 
     it 'should die for one live cell' do
-        creation = [1]
+        creation = [[1]]
         game = LifeGame.new(creation)
 
-        expect(game.cells).to eq([0])
+        expect(game.cells).to eq([[0]])
     end
 
     it 'should die when have one live neighbour' do
-        creation = [1, 1]
+        creation = [[1, 1]]
         game = LifeGame.new(creation)
-        expect(game.cells).to eq([0, 0])
+        expect(game.cells).to eq([[0, 0]])
     end
+
+    it 'should keep live when have two live neighbours on left and right' do
+        creation = [[1, 1, 1]]
+        game = LifeGame.new(creation)
+        expect(game.cells).to eq([[0, 1, 0]])
+    end
+
+    it 'should die when have one live neighbour in three cells' do
+        creation = [[1, 1, 0]]
+        game = LifeGame.new(creation)
+        expect(game.cells).to eq([[0, 0, 0]])
+    end
+
+
+    # it 'should keep live when have two live neighbours on top and bottom' do
+    #     creation = [[1], [1], [1]]
+    #     game = LifeGame.new(creation)
+    #     expect(game.cells).to eq([[0],[1],[0]])
+    # end
 end
