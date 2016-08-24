@@ -8,13 +8,22 @@ class LifeGame
         creation.each_with_index { |row, row_index|
             row.each_with_index{ |cell, index| 
                 live_neighbours_count = 0
-                if index-1 >= 0 && row[index-1] == 1
-                    live_neighbours_count += 1
-                end
 
-                if index+1 < row.size && row[index+1] == 1
-                    live_neighbours_count += 1
-                end
+                live_neighbours_count += (index > 0 ? row[index-1 ] : 0)
+                
+                live_neighbours_count += (index+1 < row.size ? row[index+1] : 0)
+                
+                live_neighbours_count += (row_index > 0 ? creation[row_index-1][index] : 0)
+                
+                live_neighbours_count += (row_index+1 < creation.size ? creation[row_index+1][index] : 0)
+
+                live_neighbours_count += (row_index > 0 && index > 0 ? creation[row_index-1][index-1] : 0)
+
+                live_neighbours_count += (row_index > 0 && index+1 < row.size ? creation[row_index-1][index+1] : 0)
+
+                live_neighbours_count += (row_index+1 < creation.size && index > 0 ? creation[row_index+1][index-1] : 0)
+
+                live_neighbours_count += (row_index+1 < creation.size && index+1 < row.size ? creation[row_index+1][index+1] : 0)
 
                 if live_neighbours_count < 2
                     @cells[row_index][index] = 0

@@ -35,10 +35,37 @@ describe "Game of Life" do
         expect(game.cells).to eq([[0, 0, 0]])
     end
 
+    it 'should keep die when live neighbours are not 3' do
+        creation = [[1, 0, 1]]
+        game = LifeGame.new(creation)
+        expect(game.cells).to eq([[0, 0, 0]])
+    end
 
-    # it 'should keep live when have two live neighbours on top and bottom' do
-    #     creation = [[1], [1], [1]]
-    #     game = LifeGame.new(creation)
-    #     expect(game.cells).to eq([[0],[1],[0]])
-    # end
+    it 'should keep live when have two live neighbours on top and bottom' do
+        creation = [[1], [1], [1]]
+        game = LifeGame.new(creation)
+        expect(game.cells).to eq([[0],[1],[0]])
+    end
+
+    it 'should keep live when have live neighbours at top right and top left' do
+        creation = [[1, 0, 1],
+                    [0, 1, 0]]
+        game = LifeGame.new(creation)
+        expect(game.cells).to eq(
+            [[0, 0, 0],
+             [0, 1, 0]])
+    end
+
+    it 'should keep live when have live neighbours at bottom right and bottom left' do
+        creation = [[0, 1, 0],
+                    [1, 0, 1]]
+        game = LifeGame.new(creation)
+        expect(game.cells).to eq(
+            [[0, 1, 0],
+             [0, 0, 0]])
+    end
+
+    xit 'should die when have more than three live neighbours' do
+        pending('to be implemented')
+    end
 end
