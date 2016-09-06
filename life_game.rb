@@ -1,44 +1,40 @@
 class LifeGame
 
-    attr_reader :cells
+    def next_generation(world_creation)
+        life = Marshal.load(Marshal.dump(world_creation))
 
-    def initialize
-        # next_generation(creation)
-    end
+        world_creation.each_with_index { |row, row_index|
+            row.each_with_index { |cell, index|
+                live_neighbour_count = 0
 
-    def next_generation(creation)
-        next_gen_cells = Marshal.load(Marshal.dump(creation))
+                live_neighbour_count += (index > 0 ? row[index-1] : 0)
 
-        creation.each_with_index { |row, row_index|
-            row.each_with_index{ |cell, index| 
-                live_neighbours_count = 0
+                live_neighbour_count += (index < row.size-1 ? row[index+1] : 0)
 
-                live_neighbours_count += (index > 0 ? row[index-1 ] : 0)
-                
-                live_neighbours_count += (index+1 < row.size ? row[index+1] : 0)
-                
-                live_neighbours_count += (row_index > 0 ? creation[row_index-1][index] : 0)
-                
-                live_neighbours_count += (row_index+1 < creation.size ? creation[row_index+1][index] : 0)
+                live_neighbour_count += (row_index > 0 ? world_creation[row_index-1][index] : 0)
 
-                live_neighbours_count += (row_index > 0 && index > 0 ? creation[row_index-1][index-1] : 0)
+                live_neighbour_count += (row_index < world_creation.size-1 ? world_creation[row_index+1][index] : 0)
 
-                live_neighbours_count += (row_index > 0 && index+1 < row.size ? creation[row_index-1][index+1] : 0)
+                live_neighbour_count += (row_index > 0 && index > 0 ? world_creation[row_index-1][index-1] : 0)
 
-                live_neighbours_count += (row_index+1 < creation.size && index > 0 ? creation[row_index+1][index-1] : 0)
+                live_neighbour_count += (row_index > 0 && index < row.size-1 ? world_creation[row_index-1][index+1] : 0)
 
-                live_neighbours_count += (row_index+1 < creation.size && index+1 < row.size ? creation[row_index+1][index+1] : 0)
+                live_neighbour_count += (row_index < world_creation.size-1 && index < row.size-1 ? world_creation[row_index+1][index+1] : 0)
 
-                if live_neighbours_count < 2 || live_neighbours_count > 3
-                    next_gen_cells[row_index][index] = 0
+                live_neighbour_count += (row_index < world_creation.size-1 && index > 0 ? world_creation[row_index+1][index-1] : 0)
+
+                if live_neighbour_count < 2 || live_neighbour_count > 3
+                    life[row_index][index] = 0
                 end
 
-                if live_neighbours_count == 3 
-                    next_gen_cells[row_index][index] = 1
+                if live_neighbour_count == 3
+                    life[row_index][index] = 1
                 end
-            }
+            } 
         }
 
-        @cells = Marshal.load(Marshal.dump(next_gen_cells))
+
+
+        return life
     end
 end
